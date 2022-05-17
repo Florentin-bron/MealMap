@@ -59,4 +59,9 @@ export const styles =  StyleSheet.create({
         marginTop: 5,
         marginBottom: 5,
       },
+      logout: {
+        position: 'absolute',
+        top: 0 + StatusBar.currentHeight,
+        right: 0
+      },
 })
