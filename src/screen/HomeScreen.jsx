@@ -15,11 +15,19 @@ export function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.logout}>
-        <Button title='Logout' onPress={ () => {setLogin(null)}}/>
+        <Button title='Logout' onPress={() => { setLogin(null) }} />
       </View>
       <View>
         <Text>Bonjour {user?.username} !</Text>
       </View>
+      <Button
+        title="Ajouter des places"
+        onPress={() => navigation.navigate('Places')}
+      />
+      <Button
+        title="Gérer mes places"
+        onPress={() => navigation.navigate('ManagePlaces')}
+      />
     </View>
 
   );
