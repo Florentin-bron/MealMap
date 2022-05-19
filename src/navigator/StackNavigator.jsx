@@ -3,10 +3,12 @@ import { LoginScreen } from '../screen/LoginScreen';
 import { RegisterScreen } from '../screen/RegisterScreen'
 import { HomeScreen } from '../screen/HomeScreen'
 import { PlacesScreen } from '../screen/PlacesScreen';
+import { ManagePlacesScreen } from '../screen/ManagePlacesScreen';
+import { EditPlaceScreen } from '../screen/EditPlaceScreen';
 
 import { LoginContext } from '../context/context';
 import { useContext } from 'react';
-import { ManagePlacesScreen } from '../screen/ManagePlacesScreen';
+
 
 
 const Stack = createNativeStackNavigator();
@@ -23,6 +25,7 @@ export function StackNavigator() {
                 <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
                 <Stack.Screen name="Places" component={PlacesScreen}/>
                 <Stack.Screen name="ManagePlaces" component={ManagePlacesScreen}/>
+                <Stack.Screen name="EditPlace" component={EditPlaceScreen}/>
             </>
             ) : (
             //sinon on retourne sur la page login

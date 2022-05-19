@@ -26,7 +26,13 @@ export function ManagePlacesScreen({ navigation }) {
                 })
                 .then(function (response) {
                     const { data } = response;
-                    setPlaces(data.data)
+                    let filteredPlaces = []
+                    data.data.map((place) => {
+                        if(place.attributes.users_permissions_user.data != null && place.attributes.users_permissions_user.data.id == user.id){
+                            filteredPlaces.push(place);
+                        }
+                    })
+                    setPlaces(filteredPlaces)
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -37,10 +43,32 @@ export function ManagePlacesScreen({ navigation }) {
     }
 
     const removePlaces = (id) =>{
-        console.log(id);
-        places.map((place) => (console.log(place.attributes.users_permissions_user.data)))
+        axios.delete(`https://digitalcampus.nerdy-bear.com/api/places/${id}`,
+        {
+            headers: {
+                Authorization: "Bearer " + user.jwt
+            },
+        })
+        .then(function (response) {
+            const { data } = response;
+            let deletedPlaces = places
+            deletedPlaces = deletedPlaces.filter(
+                (place) => place.id !== id
+              )
+            setPlaces(deletedPlaces);
+        })
+        .catch(function (error) {
+            console.log(error);
+            Alert.alert('Erreur de récupération')
+        })    }
 
-    }
+        const editPlaces = (place) =>{
+            navigation.navigate({
+                name: 'EditPlace',
+                params: { place: place },
+                merge: true,
+              });
+        }
 
     useEffect(() => {
         getPlaces();
@@ -48,15 +76,15 @@ export function ManagePlacesScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <View style={{ flex: 1, width: "100%", backgroundColor: "red" }}>
+            <View style={{ flex: 1, width: "100%" }}>
                 {places.length > 0 ? (
-                    <ScrollView style={{ flex: 1, backgroundColor: "green" }}
+                    <ScrollView style={{ flex: 1 }}
                     contentContainerStyle={{alignItems: "center"}}
                     >
                         {places.map((place) => (
                             <View key={place.id}>
                                 <Card style={{ padding: 20, margin: 5 }}>
-                                    <Text style={{ paddingRight: 40 }}>
+                                    <Text style={{ paddingRight: 80 }}>
                                         {place.attributes.title}
                                     </Text>
                                     <Text
@@ -64,6 +92,12 @@ export function ManagePlacesScreen({ navigation }) {
                                         onPress={() => removePlaces(place.id)}
                                     >
                                         &times;
+                                    </Text>
+                                    <Text
+                                        style={styles.editBtn}
+                                        onPress={() => editPlaces(place)}
+                                    >
+                                        🖊
                                     </Text>
                                 </Card>
                             </View>
